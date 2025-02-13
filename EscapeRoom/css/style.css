@@ -1,0 +1,482 @@
+/* ======================
+   PALETTE & FONT
+====================== */
+:root {
+  --primary: #001B2E;
+  --secondary: #003554;
+  --success: #2E5A3D;
+  --accent: #00bfff; /* Glow neon azzurro */
+  --warning: #B95C00;
+  --error: #8B0000;
+  --background: #0D0D0D;
+  --borders: #212529;
+  --text: #E5E5E5;
+  --text-muted: #86898C;
+}
+
+/* ======================
+   RESET & BASE
+====================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--background);
+  font-family: 'Rajdhani', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: none;
+}
+
+/* ======================
+   CONTAINER
+====================== */
+#game-container {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #003554 10%, #000000 120%);
+  position: relative;
+}
+
+/* ======================
+   SCREEN
+====================== */
+.screen {
+  display: none;
+  width: 100%;
+  height: 100%;
+  animation: fadeIn 0.5s ease forwards;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ======================
+   CONTENT
+====================== */
+.content {
+  padding: 3rem;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.title-main {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 3.5rem; 
+  text-shadow: 1px 1px 2px var(--borders);
+  margin-top: -2rem;
+}
+
+.title-sub {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 2.5rem;
+  text-shadow: 1px 1px 2px var(--borders);
+  margin-top: -0.6rem;
+  margin-bottom: 1.4rem;
+}
+
+h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  text-shadow: 1px 1px 2px var(--borders);
+  margin: 1rem 0;
+}
+
+p {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  text-align: center;
+  max-width: 50rem;
+}
+
+ul {
+  list-style: disc;
+  text-align: left;
+  margin: 0.4rem 0 0.4rem 2rem;
+  max-width: 45rem;
+}
+
+li {
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+
+/* ======================
+   BUTTONS
+====================== */
+.btn {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  margin: 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: var(--primary);
+  color: #ffffff;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 4px var(--accent);
+  transition: transform 0.1s ease, box-shadow 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Pulsante Indietro (utilizzato solo nelle schermate precedenti) */
+.back-button {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  background-color: var(--secondary);
+  color: #fff;
+}
+
+/* Selettori di difficoltà */
+.difficulty-options {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ======================
+   GAME (Drag & Drop)
+====================== */
+.word-bank {
+  border: 2px dashed var(--accent);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  min-height: 100px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.draggable-word {
+  padding: 0.5rem 1rem;
+  background-color: var(--secondary);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  cursor: grab;
+}
+
+.drop-zones {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.dropzone {
+  border: 2px dashed var(--accent);
+  padding: 1rem;
+  min-height: 150px;
+  flex: 1;
+}
+
+/* ======================
+   TIMER & NOTE
+====================== */
+@font-face {
+  font-family: 'Technology';
+  src: url('../font/technology.bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+.timer {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  z-index: 10;
+  text-align: center;
+}
+
+.timer .timer-label {
+  font-family: 'Technology', monospace;
+  font-size: 0.8rem;
+  color: var(--error);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+
+.timer .timer-value {
+  font-family: 'Technology', monospace;
+  font-size: 3rem; /* Timer più grande */
+  color: var(--error);
+  font-weight: bold;
+}
+
+.instruction-note {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ======================
+   MESSAGGI
+====================== */
+.message {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--error);
+}
+
+/* ======================
+   GAME 2 - CARD SORTING
+====================== */
+/* Container per gli slot delle carte (disposti in orizzontale) */
+.card-slots {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+/* Stile per ciascun slot, con numero mostrato sopra */
+.card-slot {
+  width: 150px;
+  height: 80px;
+  border: 2px dashed var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Mostra il numero dello slot usando l'attributo data-slot */
+.card-slot::before {
+  content: attr(data-slot);
+  position: absolute;
+  top: -1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text);
+}
+
+/* Container per le carte da trascinare, disposte in orizzontale */
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Stile per le carte */
+.card {
+  padding: 0.5rem 1rem;
+  background-color: var(--secondary);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  cursor: grab;
+  text-align: center;
+}
+
+/* ======================
+   GAME 3 - MATCHING EVENT & DATE
+====================== */
+.document-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: left;
+  max-width: 600px;
+  margin: 1rem auto;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.event-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  width: 90%;
+  margin: 0 auto 1rem;
+}
+
+.event-slot {
+  border: 2px solid var(--accent);
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: var(--secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-text {
+  flex: 1;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.date-dropzone {
+  width: 100px;
+  height: 40px;
+  border: 2px dashed var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background);
+}
+
+.dates-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.date-card {
+  padding: 0.5rem 1rem;
+  background-color: var(--secondary);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  cursor: grab;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+/* ======================
+   GAME 4 - ARCHIVIO SEGRETO (GRAFICI & DOMANDE)
+====================== */
+.game4-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  width: 90%;
+  margin: 0 auto;
+  align-items: center;
+}
+.graph-container {
+  flex: 1;
+  text-align: center;
+}
+.graph-container img {
+  max-width: 100%;
+  height: auto;
+}
+.question-container {
+  flex: 1;
+}
+.answer-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+/* ======================
+   GAME 5 - LA FUGA (SLIDER)
+====================== */
+/* Stile per la formula */
+.formula {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text);
+  text-align: center;
+}
+
+/* Miglioramento degli slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80%;
+  height: 10px;
+  background: #ccc;
+  outline: none;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--primary);
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: -5px;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: var(--warning);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--primary);
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: -5px;
+}
+input[type="range"]::-moz-range-thumb:hover {
+  background: var(--warning);
+}
+
+/* Facoltativo: personalizza anche il track */
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 10px;
+  background: #ccc;
+  border-radius: 5px;
+}
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 10px;
+  background: #ccc;
+  border-radius: 5px;
+}
+
+/* Stili per lo scenario (gioco 5) */
+.scenario {
+  margin: 1rem 0;
+  text-align: center;
+}
+.scenario h3 {
+  margin-bottom: 0.5rem;
+}

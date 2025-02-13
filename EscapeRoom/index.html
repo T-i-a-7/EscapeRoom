@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Escape Room: Protocollo Genesi</title>
+  <!-- Viewport ottimizzato per iPad -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <!-- Font: Orbitron (titoli), Rajdhani (testi e bottoni), Kodemono (clock) -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;500;700&family=Kodemono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="game-container">
+    
+    <!-- Timer globale -->
+    <div id="timer" class="timer" style="display: none;">
+      <div class="timer-label">TEMPO RIMASTO</div>
+      <div class="timer-value" id="time-remaining">20:00</div>
+    </div>
+
+    <!-- SCHERMATA 1: Storia (Parte 1) -->
+    <section class="screen active" id="screen-story1">
+      <div class="content">
+        <h1 class="title-main">Protocollo Genesi</h1>
+        <h1 class="title-sub">Escape Room</h1>
+        <p>
+          Anno 2097. Il mondo è sull’orlo del collasso a causa di una mutazione del virus 
+          <strong>HF-97</strong>, un ceppo patogeno letale che ha reso inutili tutte le precedenti vaccinazioni.
+        </p>
+        <p>
+          Le strutture governative sono crollate, e le città sono diventate zone di quarantena
+          abbandonate. I vaccini esistenti non funzionano più.
+        </p>
+        <p>
+          Negli archivi segreti della <strong>BioShield Corporation</strong>, ormai in rovina, 
+          è custodito il <em>Protocollo Genesi</em>, l’unico progetto in grado di sviluppare
+          un vaccino universale per fermare l’epidemia.
+        </p>
+        <!-- Pulsante Avanti -->
+        <button id="btn-next-story1" class="btn next-button">Avanti</button>
+      </div>
+    </section>
+
+    <!-- SCHERMATA 2: Storia (Parte 2) -->
+    <section class="screen" id="screen-story2">
+      <button id="btn-back-story2" class="btn back-button">Indietro</button>
+      <div class="content">
+        <p>
+          La strada per accedere a questi dati è tutt’altro che semplice. Il bunker della BioShield
+          è protetto da sistemi di sicurezza avanzati, enigmi crittografati e IA difensive. In più,
+          i <em>Purificatori</em>, estremisti anti-scienza, vogliono distruggere tutte le informazioni
+          sui vaccini.
+        </p>
+        <p>
+          Voi siete un gruppo di ex ricercatori e hacker, gli ultimi superstiti del 
+          <strong>Progetto Genesi</strong>. Il vostro obiettivo è infiltrarvi nel bunker, decifrare
+          i documenti crittografati e ricostruire la formula di un vaccino universale prima che 
+          il virus muti ancora.
+        </p>
+        <p>
+          <em>Attenzione:</em> il tempo scorre inesorabile e ogni errore potrebbe costarvi caro...
+        </p>
+        <button id="btn-next-story2" class="btn next-button">Avanti</button>
+      </div>
+    </section>
+
+    <!-- SCHERMATA 3: Istruzioni & Regole -->
+    <section class="screen" id="screen-instructions">
+      <button id="btn-back-instr" class="btn back-button">Indietro</button>
+      <div class="content">
+        <h2>Istruzioni e Regole</h2>
+        <p>
+          <strong>Tempo limite:</strong> Avrai <em>20 minuti</em> per completare la missione 
+          e ritrovare il Protocollo Genesi.
+        </p>
+        <p>
+          Dovrai superare <strong>10 prove</strong>, ognuna legata a un aspetto scientifico riguardante i vaccini.
+          Ogni prova sbloccata fornisce nuove informazioni fondamentali.
+        </p>
+        <ul>
+          <li>Ogni errore può comportare penalità di tempo o un blocco temporaneo.</li>
+          <li>Se il tempo si esaurisce prima di finire tutte le prove, la missione fallisce.</li>
+        </ul>
+        <p>
+          Buona fortuna! La salvezza dell’umanità è nelle tue mani...
+        </p>
+        <button id="btn-next-instr" class="btn next-button">Avanti</button>
+      </div>
+    </section>
+
+    <!-- SCHERMATA 4: Selezione difficoltà -->
+    <section class="screen" id="screen-difficulty">
+      <button id="btn-back-diff" class="btn back-button">Indietro</button>
+      <div class="content">
+        <h2>Seleziona la Difficoltà</h2>
+        <p>Scegli il livello di gioco adatto a te:</p>
+        <div class="difficulty-options">
+          <button class="btn difficulty-button" data-difficulty="media">Scuola Media</button>
+          <button class="btn difficulty-button" data-difficulty="superiore">Scuola Superiore</button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- SCHERMATA 5: Gioco 1 - Il Codice del DNA -->
+    <section class="screen" id="screen-game1">
+      <div class="content">
+        <h2>Il Codice del DNA</h2>
+        <p>Trascina le parole nella colonna corretta.</p>
+        <p class="instruction-note">Premi e trascina nella zona vuota per spostare i blocchi.</p>
+        <!-- Word bank e drop zones -->
+        <div id="word-bank" class="word-bank"></div>
+        <div class="drop-zones">
+          <div class="dropzone" id="dropzone-correct"><h3>Parole Corrette</h3></div>
+          <div class="dropzone" id="dropzone-incorrect"><h3>Parole Errate</h3></div>
+        </div>
+        <div id="message" class="message"></div>
+        <button id="btn-submit-game1" class="btn next-button">Conferma</button>
+      </div>
+    </section>
+    
+    <!-- SCHERMATA 6: Gioco 2 - Il Sistema Immunitario -->
+    <section class="screen" id="screen-game2">
+      <div class="content">
+        <h2>Il Sistema Immunitario</h2>
+        <!-- Modifica il testo qui -->
+        <p>Metti le carte nell'ordine corretto:</p>
+        <!-- Contenitore degli slot per le carte -->
+        <div class="card-slots">
+          <div class="card-slot" data-slot="1"></div>
+          <div class="card-slot" data-slot="2"></div>
+          <div class="card-slot" data-slot="3"></div>
+          <div class="card-slot" data-slot="4"></div>
+          <div class="card-slot" data-slot="5"></div>
+          <div class="card-slot" data-slot="6"></div>
+        </div>
+        <!-- Contenitore per le carte da trascinare -->
+        <div id="cards-container" class="cards-container"></div>
+        <div id="game2-message" class="message"></div>
+        <button id="btn-submit-game2" class="btn next-button">Conferma</button>
+      </div>
+    </section>
+
+    <!-- SCHERMATA 7: Documento BioShield -->
+    <section class="screen" id="screen-doc">
+      <div class="content">
+        <h2>Documento BioShield</h2>
+        <p>Hai raccolto un documento da terra che ha catturato la tua attenzione.</p>
+        <p class="instruction-note">Leggi attentamente e memorizza le informazioni. Potrebbero tornare utili!</p>
+        <p class="document-text">
+          Il presente documento riassume i principali eventi storici riguardanti lo sviluppo dei vaccini:<br><br>
+          <strong>1796</strong> – Scoperta della vaccinazione contro il vaiolo da parte di Edward Jenner.<br>
+          <strong>1885</strong> – Louis Pasteur sviluppa i primi vaccini attenuati contro rabbia e antrace.<br>
+          <strong>1955</strong> – Viene sviluppato il primo vaccino contro la poliomielite.<br>
+          <strong>1967</strong> – L’OMS lancia un programma globale per l’eradicazione del vaiolo.<br>
+          <strong>1980</strong> – Il vaiolo viene dichiarato ufficialmente eradicato.<br>
+          <strong>2020</strong> – I primi vaccini a mRNA vengono sviluppati per affrontare una pandemia globale.<br><br>
+        </p>
+        <button id="btn-doc-continue" class="btn next-button">Avanti</button>
+      </div>
+    </section>
+
+    <!-- SCHERMATA 7.1: Gioco 3 - Abbinamento Evento e Data -->
+    <section class="screen" id="screen-game3">
+      <div class="content">
+        <h2>Il Laboratorio Abbandonato</h2>
+        <p>Associa ogni evento alla sua data corretta:</p>
+        <!-- Container per i blocchi degli eventi (mostra l’evento e una zona vuota per la data) -->
+        <div class="event-slots">
+          <!-- Verranno generati dinamicamente -->
+        </div>
+        <!-- Container per le carte delle date -->
+        <div id="dates-container" class="dates-container"></div>
+        <div id="game3-message" class="message"></div>
+        <button id="btn-submit-game3" class="btn next-button">Conferma</button>
+      </div>
+    </section>
+
+    <!-- SCHERMATA 8.1: Archivio Segreto - Domanda 1 -->
+    <section class="screen" id="screen-graph1">
+      <div class="content">
+        <h2>Archivio Segreto: Domanda 1</h2>
+        <div class="game4-container">
+          <div class="graph-container">
+            <!-- Sostituisci con il percorso reale dell'immagine del grafico -->
+            <img src="img/IMG_0904.JPG" alt="Grafico 1">
+          </div>
+          <div class="question-container">
+            <p>Dopo l’inizio delle vaccinazioni, l’eccesso di mortalità negli over 85 è aumentato rispetto al periodo precedente.</p>
+            <div class="answer-buttons">
+              <button class="btn answer-btn" data-answer="vero">Vero</button>
+              <button class="btn answer-btn" data-answer="falso">Falso</button>
+            </div>
+            <div id="game4-msg1" class="message"></div>
+            <button id="btn-next-graph1" class="btn next-button">Avanti</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCHERMATA 8.2: Archivio Segreto - Domanda 2 -->
+    <section class="screen" id="screen-graph2">
+      <div class="content">
+        <h2>Archivio Segreto: Domanda 2</h2>
+        <div class="game4-container">
+          <div class="graph-container">
+            <img src="img/IMG_0905.JPG" alt="Grafico 2">
+          </div>
+          <div class="question-container">
+            <p>Nella campagna vaccinale, la popolazione con più di 80 anni è stata tra le prime fasce d’età a ricevere almeno una dose di vaccino.</p>
+            <div class="answer-buttons">
+              <button class="btn answer-btn" data-answer="vero">Vero</button>
+              <button class="btn answer-btn" data-answer="falso">Falso</button>
+            </div>
+            <div id="game4-msg2" class="message"></div>
+            <button id="btn-next-graph2" class="btn next-button">Avanti</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCHERMATA 8.3: Archivio Segreto - Domanda 3 -->
+    <section class="screen" id="screen-graph3">
+      <div class="content">
+        <h2>Archivio Segreto: Domanda 3</h2>
+        <div class="game4-container">
+          <div class="graph-container">
+            <img src="img/IMG_0906.JPG" alt="Grafico 3">
+          </div>
+          <div class="question-container">
+            <p>Dopo l’introduzione della vaccinazione obbligatoria contro il vaiolo, non ci sono più state epidemie significative di questa malattia.</p>
+            <div class="answer-buttons">
+              <button class="btn answer-btn" data-answer="vero">Vero</button>
+              <button class="btn answer-btn" data-answer="falso">Falso</button>
+            </div>
+            <div id="game4-msg3" class="message"></div>
+            <button id="btn-submit-graph3" class="btn next-button">Conferma</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCHERMATA 9: La Fuga -->
+    <section class="screen" id="screen-game5">
+      <div class="content">
+        <h2>La Fuga</h2>
+        <p>
+          Il server centrale è bloccato e il backup non autorizzato. Per attivare il backup e fuggire,
+          devi calcolare la soglia di copertura vaccinale (V<sub>c</sub>) necessaria per fermare la diffusione del virus.
+        </p>
+        <!-- Mostra la formula -->
+        <p class="formula">Formula dell'immunità di gregge: V<sub>c</sub> = 1 - (1/R<sub>0</sub>)</p>
+        
+        <div class="scenario">
+          <h3>Scenario 1: Influenza stagionale (R₀ = 1.3)</h3>
+          <p>Calcola V<sub>c</sub> = 1 - (1/1.3). Inserisci la percentuale minima richiesta:</p>
+          <input type="range" id="slider1" min="0" max="100" value="0">
+          <span id="slider1-value">0%</span>
+        </div>
+        <div class="scenario">
+          <h3>Scenario 2: Morbillo (R₀ = 18)</h3>
+          <p>Calcola V<sub>c</sub> = 1 - (1/18). Inserisci la percentuale minima richiesta:</p>
+          <input type="range" id="slider2" min="0" max="100" value="0">
+          <span id="slider2-value">0%</span>
+        </div>
+        <div id="game5-message" class="message"></div>
+        <button id="btn-submit-game5" class="btn next-button">Conferma</button>
+      </div>
+    </section>
+    
+    <!-- SCHERMATA: Missione Fallita -->
+    <section class="screen" id="screen-fail">
+      <div class="content">
+        <h2>Missione Fallita</h2>
+        <p>Il tempo è scaduto! I Purificatori hanno preso il controllo del bunker e il progetto per il vaccino non è stato salvato. La missione è fallita.</p>
+        <button id="btn-restart" class="btn next-button">Riprova</button>
+      </div>
+    </section>
+
+  </div>
+  
+  <!-- Caricamento dello script -->
+  <script src="js/script.js"></script>
+</body>
+</html>
