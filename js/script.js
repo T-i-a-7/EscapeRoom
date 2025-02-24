@@ -267,7 +267,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn_submit_game2").addEventListener("click", () => {
     let allSlotsFilled = true;
     let correctOrder = true;
-    document.querySelectorAll("#screen_game2 .card-slot").forEach(slot => {
+    // Usa il selettore corretto per gli slot del gioco 2 Superior
+    document.querySelectorAll("#screen_game2_superior .card-slot").forEach(slot => {
       if (slot.childElementCount === 0) {
         allSlotsFilled = false;
       } else {
@@ -284,14 +285,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (correctOrder) {
       document.getElementById("game2Message").textContent = "Sequenza corretta!";
-      // Dopo un breve delay, passa al documento medie
       setTimeout(() => {
         showScreen(screenDocument);
       }, 1000);
     } else {
-      document.getElementById("game2Message").textContent = "Errore! Ordine errato. Hai perso 1 minuto, riprova.";
+      document.getElementById("game2Message").textContent = "Errore! Ordine errato. Hai perso 1 minuto e devi riprovare.";
       subtractTimePenalty(60);
-      setTimeout(initGame2, 2500);
+      // Usa la funzione corretta per reinizializzare il gioco
+      setTimeout(initGame2Superior, 2500);
     }
   });
 
