@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const screenGraph3        = document.getElementById("screen_graph3");
   const screenEscape        = document.getElementById("screen_escape");
   const screenGame1Media    = document.getElementById("screen_game1_media");
+  const screenGame2Media    = document.getElementById("screen_game2_media");
   const screenFail          = document.getElementById("screen_fail");
 
   // ============================================================
@@ -709,7 +710,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let allFilled = true;
     let allCorrect = true;
     
-    // Controlla se tutte le celle da completare sono riempite correttamente
+    // Verifica che tutte le celle da completare siano riempite correttamente
     cells.forEach(cell => {
       if (cell.dataset.correct) { // Solo per le celle che l'utente deve completare
         if (cell.textContent.trim() === "") {
@@ -725,38 +726,110 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (!allCorrect) {
       document.getElementById("mediaGameMessage").textContent = "Alcuni abbinamenti sono errati. Hai perso 1 minuto!";
       subtractTimePenalty(60);
-      // Per ogni cella che non è corretta, resetta il contenuto e riattiva l'handler
+      // Per ogni cella errata, resetta il contenuto e riattiva l'handler
       cells.forEach(cell => {
         if (cell.dataset.correct) {
           if (cell.textContent.trim().toUpperCase() !== cell.dataset.correct.toUpperCase()) {
             cell.textContent = "";
-            // Rimuovi eventuali menu esistenti
             const existingMenu = cell.querySelector(".cell-menu");
             if (existingMenu) {
               cell.removeChild(existingMenu);
             }
-            // Riattiva il click per permettere una nuova scelta
             cell.addEventListener("click", handleEmptyCellClick);
           }
         }
       });
     } else {
       document.getElementById("mediaGameMessage").textContent = "Codice biometrico accettato, porta sbloccata!";
-      // Blocca le celle corrette rimuovendo i listener (così l'utente non può modificarle)
+      // Blocca le celle corrette per impedire ulteriori modifiche
       cells.forEach(cell => {
-        if (cell.dataset.correct) {
-          if (cell.textContent.trim().toUpperCase() === cell.dataset.correct.toUpperCase()) {
-            // Rimuovi il listener: possiamo sostituire il nodo con una sua copia clone che non ha gli eventi
-            let newCell = cell.cloneNode(true);
-            cell.parentNode.replaceChild(newCell, cell);
-          }
+        if (cell.dataset.correct && cell.textContent.trim().toUpperCase() === cell.dataset.correct.toUpperCase()) {
+          // Sostituisci il nodo con una copia senza listener
+          let newCell = cell.cloneNode(true);
+          cell.parentNode.replaceChild(newCell, cell);
         }
       });
-      // Procedi alla fase successiva (ad esempio, passa al prossimo gioco)
-      // Esempio:
-      // showScreen(nextScreen);
+      // Dopo un breve delay, passa al gioco 2 per le medie
+      setTimeout(() => {
+        showScreen(screenGame2Media);
+        initGame2Media();
+      }, 1000);
     }
   });  
+
+  // ============================================================
+  // GAME 2 (MEDIA) - Ordinare i termini
+  // ============================================================
+  
+  function initGame2Media() {
+    console.log("Inizializzazione Game 2 (Medie)");
+    // Svuota gli slot e il contenitore delle carte per le medie
+    document.querySelectorAll("#screen_game2_media .card-slot").forEach(slot => {
+      slot.innerHTML = "";
+    });
+    const cardsContainerMedia = document.getElementById("cardsContainerMedia");
+    cardsContainerMedia.innerHTML = "";
+    document.getElementById("game2MediaMessage").textContent = "";
+
+    // Definisci i termini per il puzzle medie (più intuitivi)
+    const cardsDataMedia = [
+      { text: "somministrazione del vaccino", order: 1 },
+      { text: "attivazione delle difese", order: 2 },
+      { text: "produzione di anticorpi", order: 3 },
+      { text: "memoria immunitaria", order: 4 }
+    ];
+    let cards = [...cardsDataMedia];
+    shuffleArray(cards);
+
+    // Crea le carte da trascinare
+    cards.forEach((card, index) => {
+      const cardEl = document.createElement("div");
+      cardEl.classList.add("card");
+      cardEl.textContent = card.text;
+      cardEl.setAttribute("draggable", "true");
+      cardEl.dataset.order = card.order;
+      cardEl.id = "cardMedia_" + index;
+      cardEl.addEventListener("dragstart", handleCardDragStart);
+      cardEl.addEventListener("dragend", handleCardDragEnd);
+      cardsContainerMedia.appendChild(cardEl);
+    });
+
+    // Associa gli eventi di drag & drop agli slot
+    document.querySelectorAll("#screen_game2_media .card-slot").forEach(slot => {
+      slot.addEventListener("dragover", handleCardDragOver);
+      slot.addEventListener("drop", handleCardDrop);
+    });
+  }
+
+  // Listener per il pulsante "Conferma" del gioco 2 medie
+  document.getElementById("btn_submit_game2_media").addEventListener("click", () => {
+    let allSlotsFilled = true;
+    let correctOrder = true;
+    document.querySelectorAll("#screen_game2_media .card-slot").forEach(slot => {
+      if (slot.children.length === 0) {
+        allSlotsFilled = false;
+      } else {
+        const cardEl = slot.firstElementChild;
+        const slotNumber = parseInt(slot.dataset.slot);
+        if (parseInt(cardEl.dataset.order) !== slotNumber) {
+          correctOrder = false;
+        }
+      }
+    });
+    if (!allSlotsFilled) {
+      document.getElementById("game2MediaMessage").textContent = "Completa il posizionamento di tutte le carte.";
+      return;
+    }
+    if (correctOrder) {
+      document.getElementById("game2MediaMessage").textContent = "Sequenza corretta!";
+      // Prosegui alla fase successiva, ad esempio:
+      // showScreen(screen_next_medie);
+    } else {
+      document.getElementById("game2MediaMessage").textContent = "Errore! Ordine errato. Hai perso 1 minuto, riprova.";
+      subtractTimePenalty(60);
+      setTimeout(initGame2Media, 2500);
+    }
+  });
 
   // ============================================================
   // GESTIONE DELLA SCELTA DIFFICOLTÀ

@@ -254,7 +254,7 @@
       </div>
     </section>
 
-    <!-- SCREEN 13: GIOCO 1 (MEDIA) - IL CODICE DEL DNA (BUTTON PUZZLE) -->
+    <!-- SCREEN 13: GIOCO 1 (MEDIE) - IL CODICE DEL DNA (BUTTON PUZZLE) -->
     <section class="screen" id="screen_game1_media">
       <div class="content">
         <h2>Il Codice del DNA</h2>
@@ -268,8 +268,27 @@
         <button id="btn_confirm_media" class="btn next-button">Conferma</button>
       </div>
     </section>
+
+    <!-- SCREEN 14: GIOCO 2 (MEDIE) - ORDINA I TERMINI -->
+    <section class="screen" id="screen_game2_media">
+      <div class="content">
+        <h2>Ordina i Termini</h2>
+        <p class="instruction-note">Trascina le carte nell'ordine corretto per ottenere una sequenza logica.</p>
+        <!-- Container degli slot: 4 slot fissi -->
+        <div class="card-slots">
+          <div class="card-slot" data-slot="1"></div>
+          <div class="card-slot" data-slot="2"></div>
+          <div class="card-slot" data-slot="3"></div>
+          <div class="card-slot" data-slot="4"></div>
+        </div>
+        <!-- Container per le carte da trascinare -->
+        <div id="cardsContainerMedia" class="cards-container"></div>
+        <div id="game2MediaMessage" class="message"></div>
+        <button id="btn_submit_game2_media" class="btn next-button">Conferma</button>
+      </div>
+    </section>
     
-    <!-- SCREEN 14: MISSIONE FALLITA -->
+    <!-- SCREEN: MISSIONE FALLITA -->
     <section class="screen" id="screen_fail">
       <div class="content">
         <h2>Missione Fallita</h2>
