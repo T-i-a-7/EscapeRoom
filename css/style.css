@@ -315,6 +315,10 @@ li {
   border-radius: 4px;
   cursor: grab;
   text-align: center;
+  /* Disabilita la selezione del testo */
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 /* ====================================================
