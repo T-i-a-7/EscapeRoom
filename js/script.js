@@ -1,51 +1,59 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Script caricato correttamente!");
 
-  // Riferimenti alle schermate
-  const screenStory1 = document.getElementById("screen-story1");
-  const screenStory2 = document.getElementById("screen-story2");
-  const screenInstructions = document.getElementById("screen-instructions");
-  const screenDifficulty = document.getElementById("screen-difficulty");
-  const screenGame1 = document.getElementById("screen-game1");
-  const screenGame2 = document.getElementById("screen-game2");
-  const screenDoc = document.getElementById("screen-doc");
-  const screenGame3 = document.getElementById("screen-game3");
-  const screenGraph1 = document.getElementById("screen-graph1");
-  const screenGraph2 = document.getElementById("screen-graph2");
-  const screenGraph3 = document.getElementById("screen-graph3");
-  const screenGame5 = document.getElementById("screen-game5");
-  const screenFail = document.getElementById("screen-fail");
+  // ============================================================
+  // Recupero degli elementi DOM per ciascuna schermata
+  // ============================================================
+  const screenIntroPart1    = document.getElementById("screen_intro_part1");
+  const screenIntroPart2    = document.getElementById("screen_intro_part2");
+  const screenInstructions  = document.getElementById("screen_instructions");
+  const screenDifficulty    = document.getElementById("screen_difficulty");
+  const screenGame1Superior = document.getElementById("screen_game1_superior");
+  const screenGame2Superior = document.getElementById("screen_game2_superior");
+  const screenDocument      = document.getElementById("screen_document");
+  const screenGame3         = document.getElementById("screen_game3");
+  const screenGraph1        = document.getElementById("screen_graph1");
+  const screenGraph2        = document.getElementById("screen_graph2");
+  const screenGraph3        = document.getElementById("screen_graph3");
+  const screenEscape        = document.getElementById("screen_escape");
+  const screenGame1Media    = document.getElementById("screen_game1_media");
+  const screenFail          = document.getElementById("screen_fail");
 
-  // Funzione per mostrare una schermata
-  function showScreen(screen) {
+  // ============================================================
+  // Funzione di utilità: mostra una schermata e nasconde le altre
+  // ============================================================
+  function showScreen(screenElement) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    screen.classList.add("active");
+    screenElement.classList.add("active");
   }
 
-  // Navigazione iniziale
-  document.getElementById("btn-next-story1").addEventListener("click", () => {
-    showScreen(screenStory2);
+  // ============================================================
+  // Navigazione tra le schermate introduttive e le istruzioni
+  // ============================================================
+  document.getElementById("btn_next_intro1").addEventListener("click", () => {
+    showScreen(screenIntroPart2);
   });
-  document.getElementById("btn-back-story2").addEventListener("click", () => {
-    showScreen(screenStory1);
+  document.getElementById("btn_back_intro2").addEventListener("click", () => {
+    showScreen(screenIntroPart1);
   });
-  document.getElementById("btn-next-story2").addEventListener("click", () => {
+  document.getElementById("btn_next_intro2").addEventListener("click", () => {
     showScreen(screenInstructions);
   });
-  document.getElementById("btn-back-instr").addEventListener("click", () => {
-    showScreen(screenStory2);
+  document.getElementById("btn_back_instructions").addEventListener("click", () => {
+    showScreen(screenIntroPart2);
   });
-  document.getElementById("btn-next-instr").addEventListener("click", () => {
+  document.getElementById("btn_next_instructions").addEventListener("click", () => {
     showScreen(screenDifficulty);
   });
-  document.getElementById("btn-back-diff").addEventListener("click", () => {
+  document.getElementById("btn_back_difficulty").addEventListener("click", () => {
     showScreen(screenInstructions);
   });
 
-  /* --- Gestione Timer e Gioco "Il Codice del DNA" --- */
-
-  const timeRemainingEl = document.getElementById("time-remaining");
-  let remainingTime = 1200; // 20 minuti in secondi
+  // ============================================================
+  // Gestione del timer globale della missione
+  // ============================================================
+  const timeRemainingEl = document.getElementById("timeRemaining");
+  let remainingTime = 1200; // 20 minuti = 1200 secondi
   let timerInterval;
 
   function updateTimerDisplay() {
@@ -55,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function startTimer() {
-    console.log("startTimer eseguita");
+    console.log("Timer avviato");
     updateTimerDisplay();
     timerInterval = setInterval(() => {
       remainingTime--;
@@ -72,20 +80,22 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTimerDisplay();
   }
 
-  // Nuove parole per il gioco (4 giuste e 4 sbagliate)
-  const wordsData = [
-    { text: "codone", isCorrect: true },
-    { text: "mRNA", isCorrect: true },
+  // ============================================================
+  // GAME 1 (SUPERIORE) - Puzzle Drag & Drop "Il Codice del DNA"
+  // ============================================================
+  const wordsDataSuperior = [
+    { text: "codone",    isCorrect: true },
+    { text: "mRNA",      isCorrect: true },
     { text: "tripletta", isCorrect: true },
-    { text: "adenina", isCorrect: true },
-    { text: "peptide", isCorrect: false },
-    { text: "mitosi", isCorrect: false },
-    { text: "emoglobina", isCorrect: false },
-    { text: "antigene", isCorrect: false }
+    { text: "adenina",   isCorrect: true },
+    { text: "peptide",   isCorrect: false },
+    { text: "mitosi",    isCorrect: false },
+    { text: "emoglobina",isCorrect: false },
+    { text: "antigene",  isCorrect: false }
   ];
-  const totalWords = wordsData.length;
+  const totalWordsSuperior = wordsDataSuperior.length;
 
-  // Funzione per mischiare l'array (Fisher-Yates shuffle)
+  // Funzione di shuffle (Fisher-Yates)
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -93,16 +103,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function initGame1() {
-    console.log("initGame1 eseguita");
-    const wordBank = document.getElementById("word-bank");
+  function initGame1Superior() {
+    console.log("Inizializzazione Game 1 (Superiore)");
+    const wordBank = document.getElementById("wordBank");
     wordBank.innerHTML = "";
-    document.getElementById("dropzone-correct").innerHTML = "<h3>Parole Corrette</h3>";
-    document.getElementById("dropzone-incorrect").innerHTML = "<h3>Parole Errate</h3>";
-    document.getElementById("message").textContent = "";
+    document.getElementById("dropzone_correct").innerHTML = "<h3>Parole Corrette</h3>";
+    document.getElementById("dropzone_incorrect").innerHTML = "<h3>Parole Errate</h3>";
+    document.getElementById("game1Message").textContent = "";
 
-    // Clona e mischia le parole per avere ordine casuale
-    const words = [...wordsData];
+    const words = [...wordsDataSuperior];
     shuffleArray(words);
 
     words.forEach((word, index) => {
@@ -111,27 +120,24 @@ document.addEventListener("DOMContentLoaded", () => {
       wordEl.textContent = word.text;
       wordEl.setAttribute("draggable", "true");
       wordEl.dataset.isCorrect = word.isCorrect;
-      wordEl.id = "word-" + index;
+      wordEl.id = "word_" + index;
       wordEl.addEventListener("dragstart", handleDragStart);
       wordEl.addEventListener("dragend", handleDragEnd);
       wordBank.appendChild(wordEl);
     });
   }
 
+  // Drag & Drop handlers per Game 1
   function handleDragStart(e) {
     e.dataTransfer.setData("text/plain", e.target.id);
     e.target.classList.add("dragging");
   }
-
   function handleDragEnd(e) {
     e.target.classList.remove("dragging");
   }
-
   function handleDragOver(e) {
     e.preventDefault();
   }
-
-  // In questo esempio, permettiamo il drop in entrambe le zone senza validare subito la correttezza
   function handleDrop(e) {
     e.preventDefault();
     const dropZone = e.currentTarget;
@@ -143,22 +149,22 @@ document.addEventListener("DOMContentLoaded", () => {
     wordEl.removeEventListener("dragend", handleDragEnd);
   }
 
-  const dropzoneCorrect = document.getElementById("dropzone-correct");
-  const dropzoneIncorrect = document.getElementById("dropzone-incorrect");
+  const dropzoneCorrect = document.getElementById("dropzone_correct");
+  const dropzoneIncorrect = document.getElementById("dropzone_incorrect");
   dropzoneCorrect.addEventListener("dragover", handleDragOver);
   dropzoneCorrect.addEventListener("drop", handleDrop);
   dropzoneIncorrect.addEventListener("dragover", handleDragOver);
   dropzoneIncorrect.addEventListener("drop", handleDrop);
 
-  // Submit game1
-  document.getElementById("btn-submit-game1").addEventListener("click", () => {
-    const wordBank = document.getElementById("word-bank");
+  // Gestione del pulsante "Conferma" per Game 1 Superior
+  document.getElementById("btn_submit_game1").addEventListener("click", () => {
+    const wordBank = document.getElementById("wordBank");
     if (wordBank.children.length > 0) {
-      document.getElementById("message").textContent = "Completa il posizionamento di tutte le parole.";
+      document.getElementById("game1Message").textContent = "Completa il posizionamento di tutte le parole.";
       return;
     }
-    const correctWords = document.getElementById("dropzone-correct").querySelectorAll(".draggable-word");
-    const incorrectWords = document.getElementById("dropzone-incorrect").querySelectorAll(".draggable-word");
+    const correctWords = document.getElementById("dropzone_correct").querySelectorAll(".draggable-word");
+    const incorrectWords = document.getElementById("dropzone_incorrect").querySelectorAll(".draggable-word");
     if (correctWords.length === 4 && incorrectWords.length === 4) {
       let allCorrect = true;
       correctWords.forEach(wordEl => {
@@ -167,21 +173,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
       if (allCorrect) {
-        document.getElementById("message").textContent = "Il codice biometrico è accettato, la porta del bunker si apre!";
-        // Dopo un breve delay, passa al Gioco 2
+        document.getElementById("game1Message").textContent = "Il codice biometrico è accettato, la porta del bunker si apre!";
+        // Dopo un breve delay, passa al Game 2 (Superior)
         setTimeout(() => {
-          showScreen(screenGame2);
-          initGame2();
+          showScreen(screenGame2Superior);
+          initGame2Superior();
         }, 1000);
         return;
       }
     }
-    document.getElementById("message").textContent = "Errore! Hai posizionato le parole in modo errato. Hai perso 1 minuto e devi riprovare.";
+    document.getElementById("game1Message").textContent = "Errore! Hai posizionato le parole in modo errato. Hai perso 1 minuto e devi riprovare.";
     subtractTimePenalty(60);
-    setTimeout(initGame1, 2500);
+    setTimeout(initGame1Superior, 2500);
   });
 
-  const cardsData = [
+  // ============================================================
+  // GAME 2 (SUPERIORE) - Card Sorting Puzzle: Il Sistema Immunitario
+  // ============================================================
+  const cardsDataSuperior = [
     { text: "iniezione del vaccino", order: 1 },
     { text: "attivazione risposta immunitaria", order: 2 },
     { text: "attivazione linfociti T e B", order: 3 },
@@ -190,68 +199,63 @@ document.addEventListener("DOMContentLoaded", () => {
     { text: "memoria immunologica", order: 6 }
   ];
 
-  function initGame2() {
-    console.log("initGame2 eseguita");
-    // Svuota i contenitori degli slot e delle carte
+  function initGame2Superior() {
+    console.log("Inizializzazione Game 2 (Superiore)");
+    // Svuota gli slot e il contenitore delle carte
     document.querySelectorAll(".card-slot").forEach(slot => {
       slot.innerHTML = "";
     });
-    const cardsContainer = document.getElementById("cards-container");
+    const cardsContainer = document.getElementById("cardsContainer");
     cardsContainer.innerHTML = "";
-    document.getElementById("game2-message").textContent = "";
-  
-    // Clona e miscela le carte per ordine casuale
-    const cards = [...cardsData];
+    document.getElementById("game2Message").textContent = "";
+
+    const cards = [...cardsDataSuperior];
     shuffleArray(cards);
-  
-    // Crea gli elementi delle carte e aggiungi gli event listener per il drag & drop
+
     cards.forEach((card, index) => {
       const cardEl = document.createElement("div");
       cardEl.classList.add("card");
       cardEl.textContent = card.text;
       cardEl.setAttribute("draggable", "true");
-      cardEl.dataset.order = card.order; // Ordine corretto della carta
-      cardEl.id = "card-" + index;
+      cardEl.dataset.order = card.order;
+      cardEl.id = "card_" + index;
       cardEl.addEventListener("dragstart", handleCardDragStart);
       cardEl.addEventListener("dragend", handleCardDragEnd);
       cardsContainer.appendChild(cardEl);
     });
-  
-    // Aggiungi listener per i drop sugli slot (se non già presenti)
+
     document.querySelectorAll(".card-slot").forEach(slot => {
       slot.addEventListener("dragover", handleCardDragOver);
       slot.addEventListener("drop", handleCardDrop);
     });
   }
 
+  // Drag & Drop handlers per le carte del Game 2
   function handleCardDragStart(e) {
     e.dataTransfer.setData("text/plain", e.target.id);
     e.target.classList.add("dragging");
   }
-  
   function handleCardDragEnd(e) {
     e.target.classList.remove("dragging");
   }
-  
   function handleCardDragOver(e) {
     e.preventDefault();
   }
-  
   function handleCardDrop(e) {
     e.preventDefault();
     const slot = e.currentTarget;
     const cardId = e.dataTransfer.getData("text/plain");
     const cardEl = document.getElementById(cardId);
     if (!cardEl) return;
-    // Se lo slot ha già una carta, la sposta nel contenitore delle carte
     if (slot.children.length > 0) {
       const existingCard = slot.firstElementChild;
-      document.getElementById("cards-container").appendChild(existingCard);
+      document.getElementById("cardsContainer").appendChild(existingCard);
     }
     slot.appendChild(cardEl);
   }
 
-  document.getElementById("btn-submit-game2").addEventListener("click", () => {
+  // Gestione del pulsante "Conferma" per il Game 2 Superior
+  document.getElementById("btn_submit_game2").addEventListener("click", () => {
     let allSlotsFilled = true;
     let correctOrder = true;
     document.querySelectorAll(".card-slot").forEach(slot => {
@@ -266,27 +270,25 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
     if (!allSlotsFilled) {
-      document.getElementById("game2-message").textContent = "Completa il posizionamento di tutte le carte.";
+      document.getElementById("game2Message").textContent = "Completa il posizionamento di tutte le carte.";
       return;
     }
     if (correctOrder) {
-      document.getElementById("game2-message").textContent = "Il sistema immunitario è accettato, il team è sicuro!";
+      document.getElementById("game2Message").textContent = "Il sistema immunitario è accettato, il team è sicuro!";
       setTimeout(() => {
-        // Mostra la schermata documento per far memorizzare le informazioni
-        showScreen(screenDoc);
+        // Passa alla schermata Documento per memorizzare le informazioni
+        showScreen(screenDocument);
       }, 1000);
     } else {
-      document.getElementById("game2-message").textContent = "Errore! Ordine errato. Hai perso 1 minuto e devi riprovare.";
+      document.getElementById("game2Message").textContent = "Errore! Ordine errato. Hai perso 1 minuto e devi riprovare.";
       subtractTimePenalty(60);
-      setTimeout(initGame2, 2500);
+      setTimeout(initGame2Superior, 2500);
     }
-  });  
-
-  document.getElementById("btn-doc-continue").addEventListener("click", () => {
-    showScreen(screenGame3);
-    initGame3();
   });
-  
+
+  // ============================================================
+  // GAME 3 - Matching Puzzle: Abbinamento Eventi e Date
+  // ============================================================
   const matchData = [
     { event: "Scoperta della vaccinazione contro il vaiolo da parte di Edward Jenner.", date: "1796" },
     { event: "Louis Pasteur sviluppa i primi vaccini attenuati contro rabbia e antrace.", date: "1885" },
@@ -294,24 +296,21 @@ document.addEventListener("DOMContentLoaded", () => {
     { event: "L’OMS lancia un programma globale per l’eradicazione del vaiolo.", date: "1967" },
     { event: "Il vaiolo viene dichiarato ufficialmente eradicato.", date: "1980" },
     { event: "I primi vaccini a mRNA vengono sviluppati per affrontare una pandemia globale.", date: "2020" }
-  ];  
+  ];
 
   function initGame3() {
-    console.log("initGame3 eseguita");
+    console.log("Inizializzazione Game 3 (Matching Event & Date)");
     const eventSlotsContainer = document.querySelector(".event-slots");
     eventSlotsContainer.innerHTML = "";
-    const datesContainer = document.getElementById("dates-container");
+    const datesContainer = document.getElementById("datesContainer");
     datesContainer.innerHTML = "";
-    document.getElementById("game3-message").textContent = "";
+    document.getElementById("game3Message").textContent = "";
 
-    // Crea una copia di matchData e mescola l'ordine
     const events = [...matchData];
-    shuffleArray(events); // ora gli eventi sono in ordine casuale
-
-    events.forEach((item, index) => {
+    shuffleArray(events);
+    events.forEach(item => {
       const slotDiv = document.createElement("div");
       slotDiv.classList.add("event-slot");
-      // Salva la data corretta nello slot per la verifica
       slotDiv.dataset.correctDate = item.date;
 
       const eventText = document.createElement("div");
@@ -328,51 +327,45 @@ document.addEventListener("DOMContentLoaded", () => {
       eventSlotsContainer.appendChild(slotDiv);
     });
 
-    // Prepara le carte delle date: estrai le date da matchData e mescola l'ordine
     const dates = matchData.map(item => item.date);
     shuffleArray(dates);
-
     dates.forEach((date, index) => {
       const dateCard = document.createElement("div");
       dateCard.classList.add("date-card");
       dateCard.textContent = date;
       dateCard.setAttribute("draggable", "true");
       dateCard.dataset.date = date;
-      dateCard.id = "date-" + index;
+      dateCard.id = "date_" + index;
       dateCard.addEventListener("dragstart", handleDateDragStart);
       dateCard.addEventListener("dragend", handleDateDragEnd);
       datesContainer.appendChild(dateCard);
     });
   }
-  
+
   function handleDateDragStart(e) {
     e.dataTransfer.setData("text/plain", e.target.id);
     e.target.classList.add("dragging");
   }
-  
   function handleDateDragEnd(e) {
     e.target.classList.remove("dragging");
   }
-  
   function handleDateDragOver(e) {
     e.preventDefault();
   }
-  
   function handleDateDrop(e) {
     e.preventDefault();
     const dropZone = e.currentTarget;
     const dateCardId = e.dataTransfer.getData("text/plain");
     const dateCard = document.getElementById(dateCardId);
     if (!dateCard) return;
-    // Se lo slot è già occupato, rimetti la carta esistente nel container delle date
     if (dropZone.children.length > 0) {
       const existingCard = dropZone.firstElementChild;
-      document.getElementById("dates-container").appendChild(existingCard);
+      document.getElementById("datesContainer").appendChild(existingCard);
     }
     dropZone.appendChild(dateCard);
-  }  
-  
-  document.getElementById("btn-submit-game3").addEventListener("click", () => {
+  }
+
+  document.getElementById("btn_submit_game3").addEventListener("click", () => {
     let allFilled = true;
     let allCorrect = true;
     document.querySelectorAll(".event-slot").forEach(slot => {
@@ -388,19 +381,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
-  
     if (!allFilled) {
-      document.getElementById("game3-message").textContent = "Completa l'abbinamento di tutti gli eventi.";
+      document.getElementById("game3Message").textContent = "Completa l'abbinamento di tutti gli eventi.";
       return;
     }
     if (allCorrect) {
-      document.getElementById("game3-message").textContent = "Accesso ai dati concesso. Frammento del Protocollo Genesi recuperato.";
-      // Dopo 1 secondo, passa alla schermata del gioco 4 (Graph1)
+      document.getElementById("game3Message").textContent = "Accesso ai dati concesso. Frammento del Protocollo Genesi recuperato.";
       setTimeout(() => {
-        // (Opzionale) Resetta le variabili per le risposte di game4
-        game4Answer1 = null;
-        game4Answer2 = null;
-        game4Answer3 = null;
         showScreen(screenGraph1);
       }, 1000);
     } else {
@@ -408,86 +395,83 @@ document.addEventListener("DOMContentLoaded", () => {
         window.game3Attempts = 3;
       }
       window.game3Attempts--;
-      document.getElementById("game3-message").textContent = `Errore di abbinamento. Tentativi rimanenti: ${window.game3Attempts}`;
+      document.getElementById("game3Message").textContent = `Errore di abbinamento. Tentativi rimanenti: ${window.game3Attempts}`;
       if (window.game3Attempts <= 0) {
         setTimeout(initGame3, 1500);
         window.game3Attempts = 3;
       }
     }
   });
-   
-  // Imposta le risposte corrette per ciascuna domanda
+
+  // ============================================================
+  // GAME 4 (SECRET ARCHIVE) - Domande con Grafici
+  // ============================================================
   const correctAnswerGraph1 = "falso";
   const correctAnswerGraph2 = "vero";
   const correctAnswerGraph3 = "falso";
 
-  // Variabili per memorizzare le risposte selezionate
-  let game4Answer1 = null;
-  let game4Answer2 = null;
-  let game4Answer3 = null;
+  let graphAnswer1 = null;
+  let graphAnswer2 = null;
+  let graphAnswer3 = null;
 
-  // Schermata Graph1
-  document.querySelectorAll("#screen-graph1 .answer-btn").forEach(btn => {
+  document.querySelectorAll("#screen_graph1 .answer-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      game4Answer1 = btn.dataset.answer;
-      if (game4Answer1 === correctAnswerGraph1) {
-        document.getElementById("game4-msg1").textContent = "Risposta corretta.";
+      graphAnswer1 = btn.dataset.answer;
+      if (graphAnswer1 === correctAnswerGraph1) {
+        document.getElementById("game4Msg1").textContent = "Risposta corretta.";
       } else {
-        document.getElementById("game4-msg1").textContent = "Risposta errata. Hai perso 1 minuto.";
+        document.getElementById("game4Msg1").textContent = "Risposta errata. Hai perso 1 minuto.";
         subtractTimePenalty(60);
       }
     });
   });
-  document.getElementById("btn-next-graph1").addEventListener("click", () => {
-    if (!game4Answer1) {
-      document.getElementById("game4-msg1").textContent = "Seleziona una risposta.";
+  document.getElementById("btn_next_graph1").addEventListener("click", () => {
+    if (!graphAnswer1) {
+      document.getElementById("game4Msg1").textContent = "Seleziona una risposta.";
       return;
     }
-    // Passa alla schermata Graph2
     showScreen(screenGraph2);
   });
 
-  // Schermata Graph2
-  document.querySelectorAll("#screen-graph2 .answer-btn").forEach(btn => {
+  document.querySelectorAll("#screen_graph2 .answer-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      game4Answer2 = btn.dataset.answer;
-      if (game4Answer2 === correctAnswerGraph2) {
-        document.getElementById("game4-msg2").textContent = "Risposta corretta.";
+      graphAnswer2 = btn.dataset.answer;
+      if (graphAnswer2 === correctAnswerGraph2) {
+        document.getElementById("game4Msg2").textContent = "Risposta corretta.";
       } else {
-        document.getElementById("game4-msg2").textContent = "Risposta errata. Hai perso 1 minuto.";
+        document.getElementById("game4Msg2").textContent = "Risposta errata. Hai perso 1 minuto.";
         subtractTimePenalty(60);
       }
     });
   });
-  document.getElementById("btn-next-graph2").addEventListener("click", () => {
-    if (!game4Answer2) {
-      document.getElementById("game4-msg2").textContent = "Seleziona una risposta.";
+  document.getElementById("btn_next_graph2").addEventListener("click", () => {
+    if (!graphAnswer2) {
+      document.getElementById("game4Msg2").textContent = "Seleziona una risposta.";
       return;
     }
     showScreen(screenGraph3);
   });
 
-  // Schermata Graph3
-  document.querySelectorAll("#screen-graph3 .answer-btn").forEach(btn => {
+  document.querySelectorAll("#screen_graph3 .answer-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      game4Answer3 = btn.dataset.answer;
-      if (game4Answer3 === correctAnswerGraph3) {
-        document.getElementById("game4-msg3").textContent = "Risposta corretta.";
+      graphAnswer3 = btn.dataset.answer;
+      if (graphAnswer3 === correctAnswerGraph3) {
+        document.getElementById("game4Msg3").textContent = "Risposta corretta.";
       } else {
-        document.getElementById("game4-msg3").textContent = "Risposta errata. Hai perso 1 minuto.";
+        document.getElementById("game4Msg3").textContent = "Risposta errata. Hai perso 1 minuto.";
         subtractTimePenalty(60);
       }
     });
   });
-  document.getElementById("btn-submit-graph3").addEventListener("click", () => {
-    if (!game4Answer3) {
-      document.getElementById("game4-msg3").textContent = "Seleziona una risposta.";
+  document.getElementById("btn_submit_graph3").addEventListener("click", () => {
+    if (!graphAnswer3) {
+      document.getElementById("game4Msg3").textContent = "Seleziona una risposta.";
       return;
     }
-    document.getElementById("game4-msg3").textContent = "Accesso ai dati concesso. Frammento del Protocollo Genesi recuperato.";
+    document.getElementById("game4Msg3").textContent = "Accesso ai dati concesso. Frammento del Protocollo Genesi recuperato.";
     setTimeout(() => {
-      showScreen(screenGame5);
-      // Reset dei slider
+      showScreen(screenEscape);
+      // Reset degli slider per il Game 5
       slider1.value = 0;
       slider2.value = 0;
       slider1Value.textContent = "0%";
@@ -497,8 +481,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const slider1 = document.getElementById("slider1");
   const slider2 = document.getElementById("slider2");
-  const slider1Value = document.getElementById("slider1-value");
-  const slider2Value = document.getElementById("slider2-value");
+  const slider1Value = document.getElementById("slider1Value");
+  const slider2Value = document.getElementById("slider2Value");
 
   slider1.addEventListener("input", () => {
     slider1Value.textContent = slider1.value + "%";
@@ -507,66 +491,314 @@ document.addEventListener("DOMContentLoaded", () => {
     slider2Value.textContent = slider2.value + "%";
   });
 
-  document.getElementById("btn-submit-game5").addEventListener("click", () => {
+  document.getElementById("btn_submit_game5").addEventListener("click", () => {
     const answer1 = parseInt(slider1.value, 10);
     const answer2 = parseInt(slider2.value, 10);
     
-    // Imposta range di accettazione: 
-    // Scenario 1: 22-24% (approssimativamente 23%)
-    // Scenario 2: 93-95% (approssimativamente 94%)
-    let correct1 = (answer1 >= 22 && answer1 <= 24);
-    let correct2 = (answer2 >= 93 && answer2 <= 95);
+    // Range accettabili:
+    // Scenario 1: 22-24%
+    // Scenario 2: 93-95%
+    const correct1 = (answer1 >= 22 && answer1 <= 24);
+    const correct2 = (answer2 >= 93 && answer2 <= 95);
     
     if (correct1 && correct2) {
-      document.getElementById("game5-message").textContent = "Backup attivato. Fuga riuscita!";
-      // Qui puoi eventualmente mostrare una schermata finale o terminare la missione.
+      document.getElementById("game5Message").textContent = "Backup attivato. Fuga riuscita!";
+      // Qui si potrebbe mostrare una schermata finale di successo
     } else {
       if (typeof window.game5Attempts === "undefined") {
         window.game5Attempts = 3;
       }
       window.game5Attempts--;
-      document.getElementById("game5-message").textContent = `Errore. Tentativi rimanenti: ${window.game5Attempts}`;
+      document.getElementById("game5Message").textContent = `Errore. Tentativi rimanenti: ${window.game5Attempts}`;
       if (window.game5Attempts <= 0) {
-        document.getElementById("game5-message").textContent = "Sistema bloccato per 2 minuti.";
+        document.getElementById("game5Message").textContent = "Sistema bloccato per 2 minuti.";
         slider1.disabled = true;
         slider2.disabled = true;
-        document.getElementById("btn-submit-game5").disabled = true;
+        document.getElementById("btn_submit_game5").disabled = true;
         setTimeout(() => {
           window.game5Attempts = 3;
           slider1.disabled = false;
           slider2.disabled = false;
-          document.getElementById("btn-submit-game5").disabled = false;
-          document.getElementById("game5-message").textContent = "";
+          document.getElementById("btn_submit_game5").disabled = false;
+          document.getElementById("game5Message").textContent = "";
         }, 120000);
       }
     }
   });
 
-  // Gestione della scelta della difficoltà "Scuola Superiore"
+  // ============================================================
+  // GAME 1 (MEDIA) - Puzzle DNA: Selezione della lettera complementare
+  // ============================================================
+
+  // FUNZIONE UTILE: Restituisce il complementare della lettera (A ↔ T, C ↔ G)
+  function getComplement(letter) {
+    const comp = { A: "T", T: "A", C: "G", G: "C" };
+    return comp[letter.toUpperCase()] || "";
+  }
+
+  // FUNZIONE UTILE: Miscelazione casuale di un array (algoritmo Fisher-Yates)
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  /**
+   * Handler per il click su una cella vuota (o già scelta) nella griglia medie.
+   * Apre (o chiude) un menu touch-friendly per scegliere tra A, T, C, G.
+   */
+  function handleEmptyCellClick(e) {
+    e.stopPropagation();
+    const cell = e.currentTarget;
+    // Se il menu esiste già, toglilo (toggle)
+    const existingMenu = cell.querySelector(".cell-menu");
+    if (existingMenu) {
+      cell.removeChild(existingMenu);
+      return;
+    }
+    // Crea il menu di scelta
+    const options = ["A", "T", "C", "G"];
+    const menu = document.createElement("div");
+    menu.classList.add("cell-menu");
+    options.forEach(option => {
+      const btn = document.createElement("button");
+      btn.textContent = option;
+      btn.classList.add("cell-menu-btn");
+      btn.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        // Imposta la scelta nella cella (sovrascrivendo quella precedente)
+        cell.textContent = option;
+        if (cell.contains(menu)) {
+          cell.removeChild(menu);
+        }
+        // Feedback immediato sulla correttezza
+        const correctLetter = cell.dataset.correct;
+        if (option.toUpperCase() === correctLetter.toUpperCase()) {
+          cell.classList.add("matched");
+          document.getElementById("mediaGameMessage").textContent = "Coppia corretta!";
+        } else {
+          cell.classList.remove("matched");
+          document.getElementById("mediaGameMessage").textContent = "Scelta errata! (Modifica se vuoi)";
+        }
+      });
+      menu.appendChild(btn);
+    });
+    cell.appendChild(menu);
+  }
+
+  /**
+   * Inizializza la griglia per il puzzle medie.
+   * La griglia è composta da 2 righe x 8 colonne (16 celle totali).
+   * In ogni colonna, una cella (determinata casualmente) è pre-riempita e l’altra è vuota.
+   * La cella vuota riceve il dato "correct" con il complementare della lettera pre-riempita.
+   */
+  function initGame1Media() {
+    console.log("Inizializzazione Game 1 (Medie)");
+    const gridContainer = document.getElementById("mediaGrid");
+    gridContainer.innerHTML = "";
+    document.getElementById("mediaGameMessage").textContent = "";
+
+    // Definiamo 8 coppie per ottenere 8 abbinamenti (una per ogni colonna)
+    const basePairs = [
+      { top: "A", bottom: "T" },
+      { top: "C", bottom: "G" },
+      { top: "T", bottom: "A" },
+      { top: "G", bottom: "C" },
+      { top: "A", bottom: "T" },
+      { top: "C", bottom: "G" },
+      { top: "T", bottom: "A" },
+      { top: "G", bottom: "C" }
+    ];
+    let pairs = [...basePairs];
+    shuffleArray(pairs);
+
+    // Genera un array di colonne da 0 a 7 e mescolalo
+    const columns = [...Array(8).keys()];
+    shuffleArray(columns);
+    // Le prime 4 colonne avranno la cella superiore pre-riempita, le altre la cella inferiore
+    const topFilledCols = columns.slice(0, 4);
+    const bottomFilledCols = columns.slice(4);
+
+    const topCells = [];
+    const bottomCells = [];
+
+    for (let col = 0; col < 8; col++) {
+      // Crea la cella superiore per la colonna col
+      const topCell = document.createElement("div");
+      topCell.classList.add("media-cell");
+      topCell.dataset.row = "top";
+      topCell.dataset.col = col;
+      // Crea la cella inferiore per la stessa colonna
+      const bottomCell = document.createElement("div");
+      bottomCell.classList.add("media-cell");
+      bottomCell.dataset.row = "bottom";
+      bottomCell.dataset.col = col;
+
+      if (topFilledCols.includes(col)) {
+        // In questa colonna, la cella superiore è pre-riempita
+        const pair = pairs.shift(); // Viene utilizzata una coppia
+        topCell.textContent = pair.top;
+        topCell.classList.add("filled");
+        // La cella inferiore resta vuota e deve essere completata dall'utente
+        bottomCell.textContent = "";
+        bottomCell.addEventListener("click", handleEmptyCellClick);
+        bottomCell.dataset.correct = getComplement(pair.top);
+      } else {
+        // In questa colonna, la cella inferiore è pre-riempita
+        const pair = pairs.shift();
+        bottomCell.textContent = pair.bottom;
+        bottomCell.classList.add("filled");
+        // La cella superiore resta vuota
+        topCell.textContent = "";
+        topCell.addEventListener("click", handleEmptyCellClick);
+        topCell.dataset.correct = getComplement(pair.bottom);
+      }
+      topCells.push(topCell);
+      bottomCells.push(bottomCell);
+    }
+    // Aggiungi prima le celle della riga superiore, poi quelle inferiori
+    topCells.forEach(cell => gridContainer.appendChild(cell));
+    bottomCells.forEach(cell => gridContainer.appendChild(cell));
+  }
+
+  /**
+   * Handler per il click su una cella vuota (o già scelta).
+   * Apre (o chiude, in modalità toggle) un menu touch-friendly per scegliere tra A, T, C, G.
+   */
+  function handleEmptyCellClick(e) {
+    e.stopPropagation();
+    const cell = e.currentTarget;
+    // Se il menu è già aperto, toglilo
+    const existingMenu = cell.querySelector(".cell-menu");
+    if (existingMenu) {
+      cell.removeChild(existingMenu);
+      return;
+    }
+    // Crea il menu di scelta
+    const options = ["A", "T", "C", "G"];
+    const menu = document.createElement("div");
+    menu.classList.add("cell-menu");
+    options.forEach(option => {
+      const btn = document.createElement("button");
+      btn.textContent = option;
+      btn.classList.add("cell-menu-btn");
+      btn.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        cell.textContent = option;
+        if (cell.contains(menu)) {
+          cell.removeChild(menu);
+        }
+        // Feedback immediato: verifica la correttezza della scelta
+        const correctLetter = cell.dataset.correct;
+        if (option.toUpperCase() === correctLetter.toUpperCase()) {
+          cell.classList.add("matched");
+          document.getElementById("mediaGameMessage").textContent = "Coppia corretta!";
+        } else {
+          cell.classList.remove("matched");
+          document.getElementById("mediaGameMessage").textContent = "Scelta errata! (Modifica se vuoi)";
+        }
+      });
+      menu.appendChild(btn);
+    });
+    cell.appendChild(menu);
+  }
+
+  document.getElementById("btn_confirm_media").addEventListener("click", () => {
+    const cells = document.querySelectorAll("#mediaGrid .media-cell");
+    let allFilled = true;
+    let allCorrect = true;
+    
+    // Controlla se tutte le celle da completare sono riempite correttamente
+    cells.forEach(cell => {
+      if (cell.dataset.correct) { // Solo per le celle che l'utente deve completare
+        if (cell.textContent.trim() === "") {
+          allFilled = false;
+        } else if (cell.textContent.trim().toUpperCase() !== cell.dataset.correct.toUpperCase()) {
+          allCorrect = false;
+        }
+      }
+    });
+    
+    if (!allFilled) {
+      document.getElementById("mediaGameMessage").textContent = "Completa tutte le scelte!";
+    } else if (!allCorrect) {
+      document.getElementById("mediaGameMessage").textContent = "Alcuni abbinamenti sono errati. Hai perso 1 minuto!";
+      subtractTimePenalty(60);
+      // Per ogni cella che non è corretta, resetta il contenuto e riattiva l'handler
+      cells.forEach(cell => {
+        if (cell.dataset.correct) {
+          if (cell.textContent.trim().toUpperCase() !== cell.dataset.correct.toUpperCase()) {
+            cell.textContent = "";
+            // Rimuovi eventuali menu esistenti
+            const existingMenu = cell.querySelector(".cell-menu");
+            if (existingMenu) {
+              cell.removeChild(existingMenu);
+            }
+            // Riattiva il click per permettere una nuova scelta
+            cell.addEventListener("click", handleEmptyCellClick);
+          }
+        }
+      });
+    } else {
+      document.getElementById("mediaGameMessage").textContent = "Codice biometrico accettato, porta sbloccata!";
+      // Blocca le celle corrette rimuovendo i listener (così l'utente non può modificarle)
+      cells.forEach(cell => {
+        if (cell.dataset.correct) {
+          if (cell.textContent.trim().toUpperCase() === cell.dataset.correct.toUpperCase()) {
+            // Rimuovi il listener: possiamo sostituire il nodo con una sua copia clone che non ha gli eventi
+            let newCell = cell.cloneNode(true);
+            cell.parentNode.replaceChild(newCell, cell);
+          }
+        }
+      });
+      // Procedi alla fase successiva (ad esempio, passa al prossimo gioco)
+      // Esempio:
+      // showScreen(nextScreen);
+    }
+  });  
+
+  // ============================================================
+  // GESTIONE DELLA SCELTA DIFFICOLTÀ
+  // ============================================================
   document.querySelectorAll(".difficulty-button").forEach(btn => {
     btn.addEventListener("click", () => {
       const difficulty = btn.dataset.difficulty;
-      console.log("Difficulty scelta:", difficulty);
+      console.log("Difficoltà scelta:", difficulty);
       if (difficulty === "superiore") {
-        console.log("Difficoltà Superiore scelta, avvio gioco 1.");
-        showScreen(screenGame1);
-        document.getElementById("timer").style.display = "block"; // Mostra il timer
-        initGame1();
-        remainingTime = 1200; // reset timer
+        console.log("Avvio del gioco per Scuola Superiore.");
+        showScreen(screenGame1Superior);
+        document.getElementById("globalTimer").style.display = "block";
+        initGame1Superior();
+        remainingTime = 1200; // reset del timer
+        startTimer();
+      } else if (difficulty === "media") {
+        console.log("Avvio del gioco per Scuola Media.");
+        showScreen(screenGame1Media);
+        document.getElementById("globalTimer").style.display = "block";
+        initGame1Media();
+        remainingTime = 1200;
         startTimer();
       } else {
-        alert(`Per la difficoltà "Scuola Media" il gioco non è ancora implementato.`);
+        alert("Difficoltà non riconosciuta.");
       }
     });
   });
 
-  document.getElementById("btn-restart").addEventListener("click", () => {
+  // Pulsante "Riprova" in caso di missione fallita
+  document.getElementById("btn_restart").addEventListener("click", () => {
     remainingTime = 1200;
-    initGame1();
+    initGame1Superior();
     startTimer();
-    showScreen(screenGame1);
+    showScreen(screenGame1Superior);
   });
 
-  // Mostra la prima schermata al caricamento
-  showScreen(screenStory1);
+  // Pulsante per continuare dalla schermata Documento
+  document.getElementById("btn_doc_continue").addEventListener("click", () => {
+    showScreen(screenGame3);
+    initGame3();
+  });
+
+  // Mostra la prima schermata al caricamento della pagina
+  showScreen(screenIntroPart1);
 });

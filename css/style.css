@@ -1,6 +1,6 @@
-/* ======================
-   PALETTE & FONT
-====================== */
+/* ====================================================
+   BASE COLORS & FONT DECLARATIONS
+====================================================== */
 :root {
   --primary: #001B2E;
   --secondary: #003554;
@@ -14,9 +14,9 @@
   --text-muted: #86898C;
 }
 
-/* ======================
-   RESET & BASE
-====================== */
+/* ====================================================
+   RESET & BASE STYLES
+====================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -33,19 +33,20 @@ html, body {
   -webkit-text-size-adjust: none;
 }
 
-/* ======================
-   CONTAINER
-====================== */
-#game-container {
+/* ====================================================
+   MAIN CONTAINER
+====================================================== */
+#gameContainer {
   width: 100%;
   height: 100%;
   background: radial-gradient(circle at center, #003554 10%, #000000 120%);
   position: relative;
 }
 
-/* ======================
-   SCREEN
-====================== */
+/* ====================================================
+   SCREEN STYLES
+   (Ogni schermata è nascosta di default; la classe "active" la mostra)
+====================================================== */
 .screen {
   display: none;
   width: 100%;
@@ -62,13 +63,13 @@ html, body {
 }
 
 @keyframes fadeIn {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-/* ======================
-   CONTENT
-====================== */
+/* ====================================================
+   CONTENT WRAPPER
+====================================================== */
 .content {
   padding: 3rem;
   max-width: 900px;
@@ -81,10 +82,13 @@ html, body {
   gap: 1.5rem;
 }
 
+/* ====================================================
+   TITLE STYLES
+====================================================== */
 .title-main {
   font-family: 'Orbitron', sans-serif;
   font-weight: 900;
-  font-size: 3.5rem; 
+  font-size: 3.5rem;
   text-shadow: 1px 1px 2px var(--borders);
   margin-top: -2rem;
 }
@@ -124,9 +128,9 @@ li {
   line-height: 1.6;
 }
 
-/* ======================
-   BUTTONS
-====================== */
+/* ====================================================
+   BUTTON STYLES
+====================================================== */
 .btn {
   font-family: 'Rajdhani', sans-serif;
   font-size: 1.2rem;
@@ -148,7 +152,7 @@ li {
   box-shadow: 0 0 8px var(--accent);
 }
 
-/* Pulsante Indietro (utilizzato solo nelle schermate precedenti) */
+/* Pulsante "Indietro" (usato nelle schermate di navigazione) */
 .back-button {
   position: absolute;
   top: 2rem;
@@ -157,7 +161,9 @@ li {
   color: #fff;
 }
 
-/* Selettori di difficoltà */
+/* ====================================================
+   DIFFICULTY OPTIONS BUTTONS
+====================================================== */
 .difficulty-options {
   display: flex;
   gap: 2rem;
@@ -165,9 +171,9 @@ li {
   flex-wrap: wrap;
 }
 
-/* ======================
-   GAME (Drag & Drop)
-====================== */
+/* ====================================================
+   GAME 1 (SUPERIORE) - DRAG & DROP WORD PUZZLE
+====================================================== */
 .word-bank {
   border: 2px dashed var(--accent);
   padding: 1rem;
@@ -202,9 +208,9 @@ li {
   flex: 1;
 }
 
-/* ======================
-   TIMER & NOTE
-====================== */
+/* ====================================================
+   TIMER & INSTRUCTION NOTE
+====================================================== */
 @font-face {
   font-family: 'Technology';
   src: url('../font/technology.bold.ttf') format('truetype');
@@ -234,7 +240,7 @@ li {
 
 .timer .timer-value {
   font-family: 'Technology', monospace;
-  font-size: 3rem; /* Timer più grande */
+  font-size: 3rem;
   color: var(--error);
   font-weight: bold;
 }
@@ -247,9 +253,9 @@ li {
   margin-bottom: 1rem;
 }
 
-/* ======================
-   MESSAGGI
-====================== */
+/* ====================================================
+   MESSAGE STYLES
+====================================================== */
 .message {
   font-size: 1.2rem;
   font-weight: 600;
@@ -258,10 +264,9 @@ li {
   color: var(--error);
 }
 
-/* ======================
-   GAME 2 - CARD SORTING
-====================== */
-/* Container per gli slot delle carte (disposti in orizzontale) */
+/* ====================================================
+   GAME 2 (SUPERIORE) - CARD SORTING PUZZLE
+====================================================== */
 .card-slots {
   display: flex;
   flex-direction: row;
@@ -270,7 +275,6 @@ li {
   margin-bottom: 1rem;
 }
 
-/* Stile per ciascun slot, con numero mostrato sopra */
 .card-slot {
   width: 150px;
   height: 80px;
@@ -281,7 +285,6 @@ li {
   position: relative;
 }
 
-/* Mostra il numero dello slot usando l'attributo data-slot */
 .card-slot::before {
   content: attr(data-slot);
   position: absolute;
@@ -293,7 +296,6 @@ li {
   color: var(--text);
 }
 
-/* Container per le carte da trascinare, disposte in orizzontale */
 .cards-container {
   display: flex;
   flex-direction: row;
@@ -302,7 +304,6 @@ li {
   margin-top: 1rem;
 }
 
-/* Stile per le carte */
 .card {
   padding: 0.5rem 1rem;
   background-color: var(--secondary);
@@ -312,9 +313,9 @@ li {
   text-align: center;
 }
 
-/* ======================
-   GAME 3 - MATCHING EVENT & DATE
-====================== */
+/* ====================================================
+   GAME 3 - MATCHING EVENT & DATE PUZZLE
+====================================================== */
 .document-text {
   font-size: 1rem;
   line-height: 1.6;
@@ -378,9 +379,9 @@ li {
   color: var(--text);
 }
 
-/* ======================
-   GAME 4 - ARCHIVIO SEGRETO (GRAFICI & DOMANDE)
-====================== */
+/* ====================================================
+   GAME 4 - SECRET ARCHIVE (GRAPHS & QUESTIONS)
+====================================================== */
 .game4-container {
   display: flex;
   flex-direction: row;
@@ -407,10 +408,9 @@ li {
   margin: 1rem 0;
 }
 
-/* ======================
-   GAME 5 - LA FUGA (SLIDER)
-====================== */
-/* Stile per la formula */
+/* ====================================================
+   GAME 5 - ESCAPE PUZZLE (SLIDERS)
+====================================================== */
 .formula {
   font-size: 1.2rem;
   font-weight: bold;
@@ -418,7 +418,6 @@ li {
   text-align: center;
 }
 
-/* Miglioramento degli slider */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -429,6 +428,7 @@ input[type="range"] {
   border-radius: 5px;
   margin: 10px 0;
 }
+
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -441,9 +441,11 @@ input[type="range"]::-webkit-slider-thumb {
   transition: background 0.2s;
   margin-top: -5px;
 }
+
 input[type="range"]::-webkit-slider-thumb:hover {
   background: var(--warning);
 }
+
 input[type="range"]::-moz-range-thumb {
   width: 20px;
   height: 20px;
@@ -454,17 +456,18 @@ input[type="range"]::-moz-range-thumb {
   transition: background 0.2s;
   margin-top: -5px;
 }
+
 input[type="range"]::-moz-range-thumb:hover {
   background: var(--warning);
 }
 
-/* Facoltativo: personalizza anche il track */
 input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   height: 10px;
   background: #ccc;
   border-radius: 5px;
 }
+
 input[type="range"]::-moz-range-track {
   width: 100%;
   height: 10px;
@@ -472,11 +475,78 @@ input[type="range"]::-moz-range-track {
   border-radius: 5px;
 }
 
-/* Stili per lo scenario (gioco 5) */
 .scenario {
   margin: 1rem 0;
   text-align: center;
 }
+
 .scenario h3 {
   margin-bottom: 0.5rem;
+}
+
+/* ====================================================
+   GAME 1 (MEDIA) - BUTTON PUZZLE PER IL CODICE DEL DNA
+====================================================== */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 50px);
+  grid-template-rows: repeat(2, 50px);
+  gap: 5px;
+  justify-content: center;
+  margin-top: 1rem;
+  height: 115px; /* 2 x 50 + 5 gap (circa) */
+}
+
+.media-cell {
+  width: 50px;
+  height: 50px;
+  border: 2px dashed var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+
+.media-cell.filled {
+  background-color: var(--secondary);
+  color: var(--text);
+  cursor: default;
+}
+
+.media-cell.matched {
+  background-color: var(--success);
+  color: var(--text);
+  cursor: default;
+}
+
+/* Menu di scelta touch-friendly */
+.cell-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.cell-menu-btn {
+  background: var(--accent);
+  color: var(--primary);
+  border: none;
+  margin: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  flex: 1 1 40%;
+  text-align: center;
 }
