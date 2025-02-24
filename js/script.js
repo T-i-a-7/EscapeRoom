@@ -264,10 +264,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Gestione del pulsante "Conferma" per il Game 2 Superior
-  document.getElementById("btn_submit_game2").addEventListener("click", () => {
+  document.getElementById("btn_submit_game2_media").addEventListener("click", () => {
     let allSlotsFilled = true;
     let correctOrder = true;
-    document.querySelectorAll(".card-slot").forEach(slot => {
+    document.querySelectorAll("#screen_game2_media .card-slot").forEach(slot => {
       if (slot.childElementCount === 0) {
         allSlotsFilled = false;
       } else {
@@ -279,25 +279,30 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
     if (!allSlotsFilled) {
-      document.getElementById("game2Message").textContent = "Completa il posizionamento di tutte le carte.";
+      document.getElementById("game2MediaMessage").textContent = "Completa il posizionamento di tutte le carte.";
       return;
     }
     if (correctOrder) {
-      document.getElementById("game2Message").textContent = "Il sistema immunitario è accettato, il team è sicuro!";
+      document.getElementById("game2MediaMessage").textContent = "Sequenza corretta!";
+      // Dopo un breve delay, passa al documento medie
       setTimeout(() => {
-        // Passa alla schermata Documento per memorizzare le informazioni
-        showScreen(screenDocument);
+        showScreen(screenDocumentMedia);
       }, 1000);
     } else {
-      document.getElementById("game2Message").textContent = "Errore! Ordine errato. Hai perso 1 minuto e devi riprovare.";
+      document.getElementById("game2MediaMessage").textContent = "Errore! Ordine errato. Hai perso 1 minuto, riprova.";
       subtractTimePenalty(60);
-      setTimeout(initGame2Superior, 2500);
+      setTimeout(initGame2Media, 2500);
     }
   });
 
   // ============================================================
   // GAME 3 - Matching Puzzle: Abbinamento Eventi e Date
   // ============================================================
+  document.getElementById("btn_doc_continue_media").addEventListener("click", () => {
+    showScreen(screenGame3Media);
+    initGame3Media();
+  });
+  
   const matchData = [
     { event: "Scoperta della vaccinazione contro il vaiolo da parte di Edward Jenner.", date: "1796" },
     { event: "Louis Pasteur sviluppa i primi vaccini attenuati contro rabbia e antrace.", date: "1885" },
