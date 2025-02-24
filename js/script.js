@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let allSlotsFilled = true;
     let correctOrder = true;
     document.querySelectorAll(".card-slot").forEach(slot => {
-      if (slot.children.length === 0) {
+      if (slot.childElementCount === 0) {
         allSlotsFilled = false;
       } else {
         const cardEl = slot.firstElementChild;
