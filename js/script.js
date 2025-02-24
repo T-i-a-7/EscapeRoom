@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const screenDocumentMedia = document.getElementById("screen_document_media");
   const screenGame3Media = document.getElementById("screen_game3_media");  
   const screenFail          = document.getElementById("screen_fail");
+  const screenSuccess = document.getElementById("screen_success");
 
   // ============================================================
   // Tracciamento della difficoltà attuale
@@ -511,7 +512,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (correct1 && correct2) {
       document.getElementById("game5Message").textContent = "Backup attivato. Fuga riuscita!";
-      // Qui si potrebbe mostrare una schermata finale di successo
+      setTimeout(() => {
+        showScreen(screenSuccess);
+      }, 1000);
     } else {
       if (typeof window.game5Attempts === "undefined") {
         window.game5Attempts = 3;
@@ -929,8 +932,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (allCorrect) {
       document.getElementById("game3MediaMessage").textContent = "Accesso ai dati concesso. Frammento del Protocollo Genesi recuperato.";
-      // Procedi alla fase successiva per le medie, ad esempio:
-      // showScreen(nextScreenForMedia);
+      setTimeout(() => {
+        showScreen(screenSuccess);
+      }, 1000);
     } else {
       document.getElementById("game3MediaMessage").textContent = "Errore nell'abbinamento. Riprova.";
       subtractTimePenalty(60);

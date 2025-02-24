@@ -659,3 +659,19 @@ input[type="range"]::-moz-range-track {
   font-size: 1.2rem;
   color: var(--text);
 }
+
+/* ====================================================
+   SUCCESS SCREEN
+====================================================== */
+#screen_success .content {
+  text-align: center;
+  padding: 3rem;
+}
+#screen_success h2 {
+  font-size: 3rem;
+  color: var(--success);
+}
+#screen_success p {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
