@@ -192,6 +192,13 @@ li {
   border: 1px solid var(--accent);
   border-radius: 4px;
   cursor: grab;
+  /* Disabilita la selezione del testo */
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  /* Cerca di ridurre il ritardo per i dispositivi touch */
+  touch-action: none;
+  -webkit-user-drag: auto;
 }
 
 .drop-zones {
