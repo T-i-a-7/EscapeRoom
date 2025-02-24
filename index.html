@@ -258,13 +258,10 @@
     <section class="screen" id="screen_game1_media">
       <div class="content">
         <h2>Il Codice del DNA</h2>
-        <!-- Regole per l'appaiamento -->
         <p class="instruction-note">Ricorda: A si abbina a T e C si abbina a G.</p>
         <p>In ogni colonna, una cella è già riempita; clicca sulla cella vuota per scegliere la lettera complementare corretta.</p>
-        <!-- Griglia: 2 righe x 8 colonne -->
         <div id="mediaGrid" class="media-grid"></div>
         <div id="mediaGameMessage" class="message"></div>
-        <!-- Pulsante di conferma per bloccare le scelte e passare al prossimo gioco -->
         <button id="btn_confirm_media" class="btn next-button">Conferma</button>
       </div>
     </section>
@@ -274,20 +271,49 @@
       <div class="content">
         <h2>Ordina i Termini</h2>
         <p class="instruction-note">Trascina le carte nell'ordine corretto per ottenere una sequenza logica.</p>
-        <!-- Container degli slot: 4 slot fissi -->
         <div class="card-slots">
           <div class="card-slot" data-slot="1"></div>
           <div class="card-slot" data-slot="2"></div>
           <div class="card-slot" data-slot="3"></div>
           <div class="card-slot" data-slot="4"></div>
         </div>
-        <!-- Container per le carte da trascinare -->
         <div id="cardsContainerMedia" class="cards-container"></div>
         <div id="game2MediaMessage" class="message"></div>
         <button id="btn_submit_game2_media" class="btn next-button">Conferma</button>
       </div>
     </section>
-    
+
+    <!-- SCREEN 15: DOCUMENTO BIOSHIELD (MEDIE) -->
+    <section class="screen" id="screen_document_media">
+      <div class="content">
+        <h2>Documento BioShield</h2>
+        <p>Hai raccolto un documento che contiene informazioni chiave per il prossimo step.</p>
+        <p class="instruction-note">Leggi attentamente: le date riportate sono fondamentali.</p>
+        <p class="document-text">
+          Il documento riassume i principali eventi storici:<br><br>
+          <strong>1900</strong> – Prima somministrazione moderna.<br>
+          <strong>1950</strong> – Sviluppo dei vaccini di seconda generazione.<br>
+          <strong>2000</strong> – Innovazioni tecnologiche vaccinali.<br>
+          <strong>2020</strong> – Rivoluzione dei vaccini a mRNA.<br><br>
+        </p>
+        <button id="btn_doc_continue_media" class="btn next-button">Avanti</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 16: GIOCO 3 (MEDIE) - ABBINA L'EVENTO ALLA DATA -->
+    <section class="screen" id="screen_game3_media">
+      <div class="content">
+        <h2>Abbina l'Evento alla Data</h2>
+        <p>Associa ogni evento alla sua data corretta:</p>
+        <!-- Contenitore per gli slot degli eventi -->
+        <div class="event-slots"></div>
+        <!-- Contenitore per le carte con le date -->
+        <div id="datesContainerMedia" class="dates-container"></div>
+        <div id="game3MediaMessage" class="message"></div>
+        <button id="btn_submit_game3_media" class="btn next-button">Conferma</button>
+      </div>
+    </section>
+
     <!-- SCREEN: MISSIONE FALLITA -->
     <section class="screen" id="screen_fail">
       <div class="content">

@@ -18,7 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const screenEscape        = document.getElementById("screen_escape");
   const screenGame1Media    = document.getElementById("screen_game1_media");
   const screenGame2Media    = document.getElementById("screen_game2_media");
+  const screenDocumentMedia = document.getElementById("screen_document_media");
+  const screenGame3Media = document.getElementById("screen_game3_media");  
   const screenFail          = document.getElementById("screen_fail");
+
+  // ============================================================
+  // Tracciamento della difficoltà attuale
+  // ============================================================
+  let currentDifficulty = ""; // "media" o "superiore"
 
   // ============================================================
   // Funzione di utilità: mostra una schermata e nasconde le altre
@@ -822,14 +829,114 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (correctOrder) {
       document.getElementById("game2MediaMessage").textContent = "Sequenza corretta!";
-      // Prosegui alla fase successiva, ad esempio:
-      // showScreen(screen_next_medie);
+      // Dopo un breve delay, passa al gioco 3 medie
+      setTimeout(() => {
+        showScreen(screenDocumentMedia);
+        initGame3Media();
+      }, 1000);
     } else {
       document.getElementById("game2MediaMessage").textContent = "Errore! Ordine errato. Hai perso 1 minuto, riprova.";
       subtractTimePenalty(60);
       setTimeout(initGame2Media, 2500);
     }
-  });
+  });  
+
+  // 
+  // GAME 3 - DOCUMENTO
+  //
+  document.getElementById("btn_doc_continue_media").addEventListener("click", () => {
+    showScreen(screenGame3Media);
+    initGame3Media();
+  });  
+
+  // ============================================================
+  // GAME 3 (MEDIA) - Riordinare le date
+  // ============================================================
+  
+  function initGame3Media() {
+    console.log("Inizializzazione Game 3 (Medie)");
+    const eventSlotsContainer = document.querySelector("#screen_game3_media .event-slots");
+    eventSlotsContainer.innerHTML = "";
+    const datesContainerMedia = document.getElementById("datesContainerMedia");
+    datesContainerMedia.innerHTML = "";
+    document.getElementById("game3MediaMessage").textContent = "";
+  
+    // Definisci 4 eventi con relative date per le medie
+    const matchDataMedia = [
+      { event: "Prima somministrazione moderna", date: "1900" },
+      { event: "Sviluppo vaccini 2a generazione", date: "1950" },
+      { event: "Innovazioni tecnologiche", date: "2000" },
+      { event: "Rivoluzione dei vaccini a mRNA", date: "2020" }
+    ];
+  
+    // Mescola gli eventi
+    let events = [...matchDataMedia];
+    shuffleArray(events);
+    events.forEach(item => {
+      const slotDiv = document.createElement("div");
+      slotDiv.classList.add("event-slot");
+      slotDiv.dataset.correctDate = item.date;
+  
+      const eventText = document.createElement("div");
+      eventText.classList.add("event-text");
+      eventText.textContent = item.event;
+  
+      const dropZone = document.createElement("div");
+      dropZone.classList.add("date-dropzone");
+      dropZone.addEventListener("dragover", handleDateDragOver);
+      dropZone.addEventListener("drop", handleDateDrop);
+  
+      slotDiv.appendChild(eventText);
+      slotDiv.appendChild(dropZone);
+      eventSlotsContainer.appendChild(slotDiv);
+    });
+  
+    // Estrai le date dagli eventi (4 date) e mescolale
+    let dates = matchDataMedia.map(item => item.date);
+    shuffleArray(dates);
+    dates.forEach((date, index) => {
+      const dateCard = document.createElement("div");
+      dateCard.classList.add("date-card");
+      dateCard.textContent = date;
+      dateCard.setAttribute("draggable", "true");
+      dateCard.dataset.date = date;
+      dateCard.id = "dateMedia_" + index;
+      dateCard.addEventListener("dragstart", handleDateDragStart);
+      dateCard.addEventListener("dragend", handleDateDragEnd);
+      datesContainerMedia.appendChild(dateCard);
+    });
+  }
+  
+  document.getElementById("btn_submit_game3_media").addEventListener("click", () => {
+    let allFilled = true;
+    let allCorrect = true;
+    document.querySelectorAll("#screen_game3_media .event-slot").forEach(slot => {
+      const correctDate = slot.dataset.correctDate;
+      const dropZone = slot.querySelector(".date-dropzone");
+      if (dropZone.children.length === 0) {
+        allFilled = false;
+      } else {
+        const dateCard = dropZone.firstElementChild;
+        const selectedDate = dateCard.dataset.date;
+        if (selectedDate !== correctDate) {
+          allCorrect = false;
+        }
+      }
+    });
+    if (!allFilled) {
+      document.getElementById("game3MediaMessage").textContent = "Completa l'abbinamento di tutti gli eventi.";
+      return;
+    }
+    if (allCorrect) {
+      document.getElementById("game3MediaMessage").textContent = "Accesso ai dati concesso. Frammento del Protocollo Genesi recuperato.";
+      // Procedi alla fase successiva per le medie, ad esempio:
+      // showScreen(nextScreenForMedia);
+    } else {
+      document.getElementById("game3MediaMessage").textContent = "Errore nell'abbinamento. Riprova.";
+      subtractTimePenalty(60);
+      setTimeout(initGame3Media, 2500);
+    }
+  });  
 
   // ============================================================
   // GESTIONE DELLA SCELTA DIFFICOLTÀ
@@ -837,6 +944,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".difficulty-button").forEach(btn => {
     btn.addEventListener("click", () => {
       const difficulty = btn.dataset.difficulty;
+      currentDifficulty = difficulty; // salva la difficoltà scelta
       console.log("Difficoltà scelta:", difficulty);
       if (difficulty === "superiore") {
         console.log("Avvio del gioco per Scuola Superiore.");
@@ -856,16 +964,23 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Difficoltà non riconosciuta.");
       }
     });
-  });
+  });  
 
   // Pulsante "Riprova" in caso di missione fallita
   document.getElementById("btn_restart").addEventListener("click", () => {
     remainingTime = 1200;
-    initGame1Superior();
-    startTimer();
-    showScreen(screenGame1Superior);
+    if (currentDifficulty === "media") {
+      initGame1Media();
+      startTimer();
+      showScreen(screenGame1Media);
+    } else {
+      // Per "superiore" o default
+      initGame1Superior();
+      startTimer();
+      showScreen(screenGame1Superior);
+    }
   });
-
+  
   // Pulsante per continuare dalla schermata Documento
   document.getElementById("btn_doc_continue").addEventListener("click", () => {
     showScreen(screenGame3);
